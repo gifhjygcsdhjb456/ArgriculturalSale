@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qst.crop.dao.CommentDao">
+    <resultMap id="BaseResultMap" type="com.qst.crop.entity.Comment">
+        <id column="order_id" jdbcType="INTEGER" property="orderId" />
+        <id column="comment_id" jdbcType="INTEGER" property="commentId" />
+        <result column="content" jdbcType="VARCHAR" property="content" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        comment_id,order_id, user_name,content,create_time
+    </sql>
+    <insert id="insertComment" parameterType="com.qst.crop.entity.Comment">
+        insert into tb_comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="commentId != null">
+                comment_id,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="commentId != null">
+                #{commentId,jdbcType=INTEGER},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=INTEGER},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectComment" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List" />
+        from tb_comment
+        where order_id = #{orderId,jdbcType=INTEGER}
+        order by create_time desc
+    </select>
+</mapper>
